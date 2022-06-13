@@ -3,6 +3,10 @@ class Token {
         this.type = type;
         this.value = value;
     }
+
+    compare(type, value) {
+        return this.type === type && this.value === value;
+    }
 }
 
 module.exports = Token;

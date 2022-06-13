@@ -1,7 +1,6 @@
 const {
     KEYWORDS,
     TOKEN_TYPES,
-    IGNORED_CHARS,
 } = require('./constants');
 const Position = require('./Position');
 const Token = require('./Token');
@@ -38,6 +37,8 @@ class Lexer {
             else if (/^[A-Za-z]+$/.test(this.char)) {
                 this.tokens.push(this.getId());
             }
+            else if (/[0-9]/.test(this.char))
+                this.tokens.push(this.getNum());
             else {
                 const char = this.char;
                 this.next();
@@ -95,6 +96,17 @@ class Lexer {
         this.next();
 
         return new Token(TOKEN_TYPES.STRING, stringRes);
+    }
+
+    getNum() {
+        let numRes = '';
+
+        while (this.char != null && /[0-9]/.test(this.char)) {
+            numRes += this.char;
+            this.next();
+        }
+
+        return new Token(TOKEN_TYPES.NUM, Number(numRes));
     }
 }
 
